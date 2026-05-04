@@ -1,7 +1,26 @@
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+
+const COVER_IMAGES = [
+  '/gallery/portfolio/noora-ruhi/cover.jpg',
+  '/gallery/portfolio/sacred-recursion/cover.jpg',
+  '/gallery/portfolio/shilpo-shikka/cover.jpg',
+  '/gallery/exhibitions/halifax/cover.jpg',
+  '/gallery/exhibitions/noora-ruhi/cover.jpg',
+  '/gallery/exhibitions/shilpo-shikka/cover.jpg'
+];
 
 export default function Home() {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % COVER_IMAGES.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -40,7 +59,7 @@ export default function Home() {
       </section>
 
       {/* Intro Section */}
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-theme-bg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-16 items-center">
             <motion.div 
@@ -76,13 +95,28 @@ export default function Home() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="aspect-[4/5] bg-theme-accent p-8 rounded-sm flex flex-col justify-end relative overflow-hidden group"
+              className="aspect-[4/5] bg-theme-accent p-8 rounded-sm flex flex-col justify-end relative overflow-hidden group shadow-sm border border-theme-accent"
             >
-              <div className="absolute inset-0 bg-theme-text/10 mix-blend-multiply"></div>
+              <AnimatePresence mode="popLayout">
+                <motion.img
+                  key={currentImageIndex}
+                  src={COVER_IMAGES[currentImageIndex]}
+                  initial={{ opacity: 0, scale: 1.05 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 1.5, ease: "easeInOut" }}
+                  className="absolute inset-0 w-full h-full object-cover"
+                  alt={`Gallery showcase ${currentImageIndex + 1}`}
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).style.opacity = '0';
+                  }}
+                />
+              </AnimatePresence>
+              <div className="absolute inset-0 bg-gradient-to-t from-theme-text/80 via-theme-text/20 to-transparent"></div>
               {/* This acts as a placeholder for a featured image. Since images will be added by the user, we structure it to look beautiful even empty. */}
               <div className="relative z-10 text-white">
                 <h3 className="text-2xl font-serif mb-2 drop-shadow-md">The Creative Journey</h3>
-                <Link to="/portfolio" className="text-white hover:text-theme-accent transition-colors underline underline-offset-4 decoration-white/50">
+                <Link to="/portfolio" className="text-white hover:text-white/80 transition-colors underline underline-offset-4 decoration-white/50 drop-shadow-sm">
                   Explore the Portfolio
                 </Link>
               </div>

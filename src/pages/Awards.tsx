@@ -97,7 +97,7 @@ export default function Awards() {
 
       <div className="mt-20">
         <h3 className="text-2xl font-serif text-theme-text mb-8 border-b border-theme-accent pb-4">Gallery</h3>
-        <GalleryGrid images={images.filter(img => !img.src.includes('16950306.jpg') && !img.src.includes('youtube_shot.jpg'))} />
+        <GalleryGrid images={images.filter(img => !img.path.includes('16950306.jpg') && !img.path.includes('youtube_shot.jpg'))} />
       </div>
     </div>
   );

@@ -6,16 +6,19 @@ const projects = [
     id: 'noora-ruhi',
     title: 'Noora Ruhi',
     description: 'Spiritual Light: An exploration of place, geography, and diasporic experience.',
+    image: '/gallery/portfolio/noora-ruhi/cover.jpg'
   },
   {
     id: 'sacred-recursion',
     title: 'Sacred Recursion',
     description: 'Exploring Islamic geometry, illumination, and diasporic spatial memory.',
+    image: '/gallery/portfolio/sacred-recursion/cover.jpg'
   },
   {
     id: 'shilpo-shikka',
     title: 'Shilpo Shikka',
     description: 'Art Education: The initial phase exploring Muslim women\'s visibility and creative agency.',
+    image: '/gallery/portfolio/shilpo-shikka/cover.jpg'
   }
 ];
 
@@ -40,14 +43,24 @@ export default function Portfolio() {
             className="group block"
           >
             <Link to={`/portfolio/${project.id}`} className="block">
-              <div className="aspect-[4/3] bg-theme-accent mb-6 overflow-hidden rounded-sm relative">
-                <div className="absolute inset-0 bg-theme-text/0 transition-colors duration-500 group-hover:bg-theme-text/5 z-10" />
-                {/* Fallback pattern if no image */}
-                <div className="w-full h-full flex flex-col justify-end p-8 text-theme-muted italic">
-                  <span className="opacity-0 transition-opacity duration-300 group-hover:opacity-100">View Collection &rarr;</span>
+              <div className="aspect-square bg-theme-accent mb-6 overflow-hidden rounded-sm relative">
+                <img 
+                  src={project.image} 
+                  alt={project.title} 
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  onError={(e) => {
+                    // Fallback to background color if image doesn't exist yet
+                    (e.target as HTMLImageElement).style.opacity = '0';
+                  }}
+                />
+                <div className="absolute inset-0 bg-theme-text/0 transition-colors duration-500 group-hover:bg-theme-text/20 z-10" />
+                <div className="absolute inset-0 flex items-center justify-center p-8 text-white z-20">
+                  <span className="opacity-0 translate-y-4 transition-all duration-300 tracking-wide font-sans font-medium uppercase text-sm group-hover:opacity-100 group-hover:translate-y-0">
+                    View Collection
+                  </span>
                 </div>
               </div>
-              <h2 className="text-2xl font-serif text-theme-text mb-2 transition-colors group-hover:text-theme-text opacity-80">
+              <h2 className="text-2xl font-serif text-theme-text mb-2 transition-colors group-hover:text-theme-text/80">
                 {project.title}
               </h2>
               <p className="text-theme-muted font-sans leading-relaxed">
